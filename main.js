@@ -2,7 +2,7 @@
 * @Author: Noah Huetter
 * @Date:   2020-10-19 08:45:40
 * @Last Modified by:   Noah Huetter
-* @Last Modified time: 2020-10-19 11:28:19
+* @Last Modified time: 2020-10-19 12:02:20
 */
 
 class Trainingsplan {
@@ -19,7 +19,7 @@ class Trainingsplan {
 		this.warmup = ['Andrin', 'Lian', 'Stephan', 'Cyrille', 'Melvin', 'Maurice', 'Noah B.', 'Adi', 'Jens', 'Lars', 'Nicola', 'Tim']
 		this.weeklyIncrement = 2;
 		this.halls = [ ['RE', 'TR', 'BO', 'SR'], ['BA', 'SP'] ];
-		this.specials = [ { 'Airtrack': 4 } ];
+		this.specials = [ { 'id': 'airtrack', 'period': 4 } ];
 		this.competitionTraining = [('K1', 'RE'), ('K2', 'SP'), ('K3',' SR'), ('K5+', 'BO')];
 
 		this.trainingsPerWeek = this.trainingDays.length;
@@ -112,7 +112,7 @@ class Trainingsplan {
         let g3e5 = this.getEventByGroup(initial, 5, 3);
 
         const template = `
-        <table class="table table-hover table-bordered tpl">
+        <table class="table table-hover tpl" id="table-trainingsplan">
 		<thead>
 		<tr>
 		<th scope="col"></th>
@@ -124,41 +124,41 @@ class Trainingsplan {
 		<tr>
 		<th scope="row">${group0}</th>
 		<td class="border-left">${g0e0}</td>
-		<td class="border-left">${g0e1}</td>
-		<td class="border-left">${g0e2}</td>
+		<td class="">${g0e1}</td>
+		<td class="">${g0e2}</td>
 		<td class="border-left">${g0e3}</td>
-		<td class="border-left">${g0e4}</td>
-		<td class="border-left border-right">${g0e5}</td>
+		<td class="">${g0e4}</td>
+		<td class="border-right">${g0e5}</td>
 		</tr>
 		<tr>
 		<th scope="row">${group1}</th>
 		<td class="border-left">${g1e0}</td>
-		<td class="border-left">${g1e1}</td>
-		<td class="border-left">${g1e2}</td>
+		<td class="">${g1e1}</td>
+		<td class="">${g1e2}</td>
 		<td class="border-left">${g1e3}</td>
-		<td class="border-left">${g1e4}</td>
-		<td class="border-left border-right">${g1e5}</td>
+		<td class="">${g1e4}</td>
+		<td class="border-right">${g1e5}</td>
 		</tr>
 		<tr>
 		<th scope="row">${group2}</th>
 		<td class="border-left">${g2e0}</td>
-		<td class="border-left">${g2e1}</td>
-		<td class="border-left">${g2e2}</td>
+		<td class="">${g2e1}</td>
+		<td class="">${g2e2}</td>
 		<td class="border-left">${g2e3}</td>
-		<td class="border-left">${g2e4}</td>
-		<td class="border-left border-right">${g2e5}</td>
+		<td class="">${g2e4}</td>
+		<td class="border-right">${g2e5}</td>
 		</tr>
-		<tr>
+		<tr id='spannreck-search'>
 		<th scope="row">${group3}</th>
 		<td class="border-left">${g3e0}</td>
-		<td class="border-left">${g3e1}</td>
-		<td class="border-left">${g3e2}</td>
+		<td class="">${g3e1}</td>
+		<td class="">${g3e2}</td>
 		<td class="border-left">${g3e3}</td>
-		<td class="border-left">${g3e4}</td>
-		<td class="border-left border-right">${g3e5}</td>
+		<td class="">${g3e4}</td>
+		<td class="border-right">${g3e5}</td>
 		</tr>
 		<tr>
-		<th scope="row">Einturnen</th>
+		<th scope="row"></th>
 		<th scope="col" colspan="3" class="tpl-warmup border-left">${warm0}</th>
 		<th scope="col" colspan="3" class="tpl-warmup border-left border-right">${warm1}</th>
 		</tr>
@@ -172,7 +172,17 @@ class Trainingsplan {
 
 const tp = new Trainingsplan();
 
-function renderTable() {
+function isMonday() {
+	let dow = (moment().weekday()+6)%7;
+	return dow == 0;
+}
+
+function isFriday() {
+	let dow = (moment().weekday()+6)%7;
+	return dow == 4;
+}
+
+function render() {
 	document.getElementById("trainingsplan").innerHTML = tp.genWeek(tp.initial, tp.currentOffset);
 	
 	// emphasize day
@@ -188,6 +198,32 @@ function renderTable() {
 			i += 1;
 		}
 	}
+
+	// specials
+	for (const m in tp.specials) {
+		if( (tp.currentOffset/tp.trainingsPerWeek) % tp.specials[m].period == 0) {
+			document.getElementById(tp.specials[m].id).style.display = '';
+		}
+		else {
+			document.getElementById(tp.specials[m].id).style.display = 'none';
+		}
+	}
+
+	// spannreck
+	document.getElementById('spannreck').style.display = 'none';
+	var table = document.getElementById("table-trainingsplan");
+	for (var i = 0, row; row = table.rows[i]; i++) {
+		if(table.rows[i].innerHTML.includes('K5+')) {
+			for (var j = 0, col; col = row.cells[j]; j++) {
+				if(row.cells[j].innerHTML.includes('Re')) {
+					row.cells[j].classList.add("alert-warning");
+					if(isMonday() && j < 4) document.getElementById('spannreck').style.display = '';
+					if(isFriday() && j >= 4) document.getElementById('spannreck').style.display = '';
+				}
+			}  
+		}
+	}
+
 }
 
 $(document).ready(function(){
@@ -212,7 +248,7 @@ $(document).ready(function(){
 
 	// console.log(moment().format("DD.MM.YYYY"));
 
-	renderTable();
+	render();
 	document.getElementById("btn-left").disabled = true;
  }); 
 
@@ -220,7 +256,7 @@ $(document).ready(function(){
 function btnPrevWeek() {
 	if(document.getElementById("btn-left").disabled) return;
 	tp.currentOffset = tp.currentOffset - tp.trainingsPerWeek;
-	renderTable();
+	render();
 	if(tp.currentOffset < 2) {
 		document.getElementById("btn-left").disabled = true;
 	}
@@ -228,6 +264,6 @@ function btnPrevWeek() {
 
 function btnNextWeek() {
 	tp.currentOffset = tp.currentOffset + tp.trainingsPerWeek;
-	renderTable();
+	render();
 	document.getElementById("btn-left").disabled = false;
 }
