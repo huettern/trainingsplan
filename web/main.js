@@ -2,7 +2,7 @@
 * @Author: Noah Huetter
 * @Date:   2020-10-19 08:45:40
 * @Last Modified by:   Noah Huetter
-* @Last Modified time: 2020-10-19 11:05:36
+* @Last Modified time: 2020-10-19 11:20:48
 */
 
 class Trainingsplan {
@@ -16,6 +16,7 @@ class Trainingsplan {
 		this.eventsPerDay = 3;
 		this.groups = ['K1', 'K2', 'K3', 'K5+'];
 		this.events = ['Re', 'Tr', 'Bo', 'Sr', 'Sp', 'Ba'];
+		this.warmup = ['Andrin', 'Lian', 'Stephan', 'Cyrille', 'Melvin', 'Maurice', 'Noah B.', 'Adi', 'Jens', 'Lars', 'Nicola', 'Tim']
 		this.weeklyIncrement = 2;
 		this.halls = [ ['RE', 'TR', 'BO', 'SR'], ['BA', 'SP'] ];
 		this.specials = [ { 'Airtrack': 4 } ];
@@ -76,6 +77,8 @@ class Trainingsplan {
 	genWeek(mapping, offset) {
 		let initial = tp.getTrainingInitial(mapping, offset, tp.weeklyIncrement);
 
+		let warm0 = this.warmup[offset%this.warmup.length];
+		let warm1 = this.warmup[(offset+1)%this.warmup.length];
 		let options = {weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' };
         let monday = tp.getDateFromOffset(offset).toLocaleString('de-CH', options);
         let friday = tp.getDateFromOffset(offset+1).toLocaleString('de-CH', options);
@@ -153,6 +156,11 @@ class Trainingsplan {
 		<td>${g3e3}</td>
 		<td>${g3e4}</td>
 		<td>${g3e5}</td>
+		</tr>
+		<tr>
+		<th scope="row">Einturnen</th>
+		<th scope="col" colspan="3" class="tpl-warmup">${warm0}</th>
+		<th scope="col" colspan="3" class="tpl-warmup">${warm1}</th>
 		</tr>
 		</tbody>
 		</table>
