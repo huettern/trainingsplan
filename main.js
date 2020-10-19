@@ -2,7 +2,7 @@
 * @Author: Noah Huetter
 * @Date:   2020-10-19 08:45:40
 * @Last Modified by:   Noah Huetter
-* @Last Modified time: 2020-10-19 10:34:03
+* @Last Modified time: 2020-10-19 10:41:22
 */
 
 class Trainingsplan {
@@ -164,6 +164,10 @@ class Trainingsplan {
 
 const tp = new Trainingsplan();
 
+function renderTable() {
+	document.getElementById("trainingsplan").innerHTML = tp.genWeek(tp.initial, tp.currentOffset);	
+}
+
 $(document).ready(function(){
 	console.log("Hello World!");
 	// console.log(tp.startDate);
@@ -186,15 +190,14 @@ $(document).ready(function(){
 
 	// console.log(moment().format("DD.MM.YYYY"));
 
-	document.getElementById("trainingsplan").innerHTML = tp.genWeek(tp.initial, tp.currentOffset);
+	renderTable();
 	document.getElementById("btn-left").disabled = true;
  }); 
-
 
 function btnPrevWeek() {
 	if(document.getElementById("btn-left").disabled) return;
 	tp.currentOffset = tp.currentOffset - tp.trainingsPerWeek;
-	document.getElementById("trainingsplan").innerHTML = tp.genWeek(tp.initial, tp.currentOffset);
+	renderTable();
 	if(tp.currentOffset < 2) {
 		document.getElementById("btn-left").disabled = true;
 	}
@@ -202,6 +205,6 @@ function btnPrevWeek() {
 
 function btnNextWeek() {
 	tp.currentOffset = tp.currentOffset + tp.trainingsPerWeek;
-	document.getElementById("trainingsplan").innerHTML = tp.genWeek(tp.initial, tp.currentOffset);
+	renderTable();
 	document.getElementById("btn-left").disabled = false;
 }
