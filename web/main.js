@@ -2,7 +2,7 @@
 * @Author: Noah Huetter
 * @Date:   2020-10-19 08:45:40
 * @Last Modified by:   Noah Huetter
-* @Last Modified time: 2020-10-19 11:20:48
+* @Last Modified time: 2020-10-19 11:28:19
 */
 
 class Trainingsplan {
@@ -112,55 +112,55 @@ class Trainingsplan {
         let g3e5 = this.getEventByGroup(initial, 5, 3);
 
         const template = `
-        <table class="table table-hover tpl">
+        <table class="table table-hover table-bordered tpl">
 		<thead>
 		<tr>
 		<th scope="col"></th>
-		<th scope="col" colspan="3" class="tpl-day">${monday}</th>
-		<th scope="col" colspan="3" class="tpl-day">${friday}</th>
+		<th scope="col" colspan="3" class="tpl-day border-left">${monday}</th>
+		<th scope="col" colspan="3" class="tpl-day border-left border-right">${friday}</th>
 		</tr>
 		</thead>
 		<tbody>
 		<tr>
 		<th scope="row">${group0}</th>
-		<td>${g0e0}</td>
-		<td>${g0e1}</td>
-		<td>${g0e2}</td>
-		<td>${g0e3}</td>
-		<td>${g0e4}</td>
-		<td>${g0e5}</td>
+		<td class="border-left">${g0e0}</td>
+		<td class="border-left">${g0e1}</td>
+		<td class="border-left">${g0e2}</td>
+		<td class="border-left">${g0e3}</td>
+		<td class="border-left">${g0e4}</td>
+		<td class="border-left border-right">${g0e5}</td>
 		</tr>
 		<tr>
 		<th scope="row">${group1}</th>
-		<td>${g1e0}</td>
-		<td>${g1e1}</td>
-		<td>${g1e2}</td>
-		<td>${g1e3}</td>
-		<td>${g1e4}</td>
-		<td>${g1e5}</td>
+		<td class="border-left">${g1e0}</td>
+		<td class="border-left">${g1e1}</td>
+		<td class="border-left">${g1e2}</td>
+		<td class="border-left">${g1e3}</td>
+		<td class="border-left">${g1e4}</td>
+		<td class="border-left border-right">${g1e5}</td>
 		</tr>
 		<tr>
 		<th scope="row">${group2}</th>
-		<td>${g2e0}</td>
-		<td>${g2e1}</td>
-		<td>${g2e2}</td>
-		<td>${g2e3}</td>
-		<td>${g2e4}</td>
-		<td>${g2e5}</td>
+		<td class="border-left">${g2e0}</td>
+		<td class="border-left">${g2e1}</td>
+		<td class="border-left">${g2e2}</td>
+		<td class="border-left">${g2e3}</td>
+		<td class="border-left">${g2e4}</td>
+		<td class="border-left border-right">${g2e5}</td>
 		</tr>
 		<tr>
 		<th scope="row">${group3}</th>
-		<td>${g3e0}</td>
-		<td>${g3e1}</td>
-		<td>${g3e2}</td>
-		<td>${g3e3}</td>
-		<td>${g3e4}</td>
-		<td>${g3e5}</td>
+		<td class="border-left">${g3e0}</td>
+		<td class="border-left">${g3e1}</td>
+		<td class="border-left">${g3e2}</td>
+		<td class="border-left">${g3e3}</td>
+		<td class="border-left">${g3e4}</td>
+		<td class="border-left border-right">${g3e5}</td>
 		</tr>
 		<tr>
 		<th scope="row">Einturnen</th>
-		<th scope="col" colspan="3" class="tpl-warmup">${warm0}</th>
-		<th scope="col" colspan="3" class="tpl-warmup">${warm1}</th>
+		<th scope="col" colspan="3" class="tpl-warmup border-left">${warm0}</th>
+		<th scope="col" colspan="3" class="tpl-warmup border-left border-right">${warm1}</th>
 		</tr>
 		</tbody>
 		</table>
