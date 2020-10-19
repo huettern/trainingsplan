@@ -1,0 +1,23 @@
+/*
+* @Author: Noah Huetter
+* @Date:   2020-10-19 10:16:49
+* @Last Modified by:   Noah Huetter
+* @Last Modified time: 2020-10-19 10:35:47
+*/
+* {
+} 
+
+.btn-tplr {
+	width: 100%;
+	height: 100%;
+	display: block;    
+}
+
+.tpl {
+	width: 100%;
+	margin-bottom: 0;
+}
+
+.tpl-day {
+	text-align: center;
+}
