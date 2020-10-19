@@ -2,7 +2,7 @@
 * @Author: Noah Huetter
 * @Date:   2020-10-19 08:45:40
 * @Last Modified by:   Noah Huetter
-* @Last Modified time: 2020-10-19 11:34:07
+* @Last Modified time: 2020-10-19 11:46:58
 */
 
 class Trainingsplan {
@@ -19,7 +19,7 @@ class Trainingsplan {
 		this.warmup = ['Andrin', 'Lian', 'Stephan', 'Cyrille', 'Melvin', 'Maurice', 'Noah B.', 'Adi', 'Jens', 'Lars', 'Nicola', 'Tim']
 		this.weeklyIncrement = 2;
 		this.halls = [ ['RE', 'TR', 'BO', 'SR'], ['BA', 'SP'] ];
-		this.specials = [ { 'Airtrack': 4 } ];
+		this.specials = [ { 'id': 'airtrack', 'period': 4 } ];
 		this.competitionTraining = [('K1', 'RE'), ('K2', 'SP'), ('K3',' SR'), ('K5+', 'BO')];
 
 		this.trainingsPerWeek = this.trainingDays.length;
@@ -172,7 +172,7 @@ class Trainingsplan {
 
 const tp = new Trainingsplan();
 
-function renderTable() {
+function render() {
 	document.getElementById("trainingsplan").innerHTML = tp.genWeek(tp.initial, tp.currentOffset);
 	
 	// emphasize day
@@ -186,6 +186,16 @@ function renderTable() {
 				break;
 			}
 			i += 1;
+		}
+	}
+
+	// specials
+	for (const m in tp.specials) {
+		if( (tp.currentOffset/tp.trainingsPerWeek) % tp.specials[m].period == 0) {
+			document.getElementById(tp.specials[m].id).style.display = '';
+		}
+		else {
+			document.getElementById(tp.specials[m].id).style.display = 'none';
 		}
 	}
 }
@@ -212,7 +222,7 @@ $(document).ready(function(){
 
 	// console.log(moment().format("DD.MM.YYYY"));
 
-	renderTable();
+	render();
 	document.getElementById("btn-left").disabled = true;
  }); 
 
@@ -220,7 +230,7 @@ $(document).ready(function(){
 function btnPrevWeek() {
 	if(document.getElementById("btn-left").disabled) return;
 	tp.currentOffset = tp.currentOffset - tp.trainingsPerWeek;
-	renderTable();
+	render();
 	if(tp.currentOffset < 2) {
 		document.getElementById("btn-left").disabled = true;
 	}
@@ -228,6 +238,6 @@ function btnPrevWeek() {
 
 function btnNextWeek() {
 	tp.currentOffset = tp.currentOffset + tp.trainingsPerWeek;
-	renderTable();
+	render();
 	document.getElementById("btn-left").disabled = false;
 }
