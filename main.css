@@ -2,7 +2,7 @@
 * @Author: Noah Huetter
 * @Date:   2020-10-19 10:16:49
 * @Last Modified by:   Noah Huetter
-* @Last Modified time: 2020-10-19 10:35:47
+* @Last Modified time: 2020-10-19 11:27:54
 */
 * {
 } 
@@ -20,4 +20,16 @@
 
 .tpl-day {
 	text-align: center;
+}
+
+.tpl-warmup {
+	text-align: center;
+}
+
+.border-left {
+	border-left: 1px;
+}
+
+.border-right {
+	border-right: 1px;
 }
