@@ -2,7 +2,7 @@
 * @Author: Noah Huetter
 * @Date:   2020-10-19 08:45:40
 * @Last Modified by:   Noah Huetter
-* @Last Modified time: 2020-10-19 11:46:58
+* @Last Modified time: 2020-10-19 12:02:20
 */
 
 class Trainingsplan {
@@ -112,7 +112,7 @@ class Trainingsplan {
         let g3e5 = this.getEventByGroup(initial, 5, 3);
 
         const template = `
-        <table class="table table-hover tpl">
+        <table class="table table-hover tpl" id="table-trainingsplan">
 		<thead>
 		<tr>
 		<th scope="col"></th>
@@ -148,7 +148,7 @@ class Trainingsplan {
 		<td class="">${g2e4}</td>
 		<td class="border-right">${g2e5}</td>
 		</tr>
-		<tr>
+		<tr id='spannreck-search'>
 		<th scope="row">${group3}</th>
 		<td class="border-left">${g3e0}</td>
 		<td class="">${g3e1}</td>
@@ -171,6 +171,16 @@ class Trainingsplan {
 }
 
 const tp = new Trainingsplan();
+
+function isMonday() {
+	let dow = (moment().weekday()+6)%7;
+	return dow == 0;
+}
+
+function isFriday() {
+	let dow = (moment().weekday()+6)%7;
+	return dow == 4;
+}
 
 function render() {
 	document.getElementById("trainingsplan").innerHTML = tp.genWeek(tp.initial, tp.currentOffset);
@@ -198,6 +208,22 @@ function render() {
 			document.getElementById(tp.specials[m].id).style.display = 'none';
 		}
 	}
+
+	// spannreck
+	document.getElementById('spannreck').style.display = 'none';
+	var table = document.getElementById("table-trainingsplan");
+	for (var i = 0, row; row = table.rows[i]; i++) {
+		if(table.rows[i].innerHTML.includes('K5+')) {
+			for (var j = 0, col; col = row.cells[j]; j++) {
+				if(row.cells[j].innerHTML.includes('Re')) {
+					row.cells[j].classList.add("alert-warning");
+					if(isMonday() && j < 4) document.getElementById('spannreck').style.display = '';
+					if(isFriday() && j >= 4) document.getElementById('spannreck').style.display = '';
+				}
+			}  
+		}
+	}
+
 }
 
 $(document).ready(function(){
