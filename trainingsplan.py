@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: noah
 # @Date:   2020-10-18 09:31:13
-# @Last Modified by:   noah
-# @Last Modified time: 2020-10-18 13:58:29
+# @Last Modified by:   Noah Huetter
+# @Last Modified time: 2020-10-19 10:06:57
 import numpy as np
 import itertools, copy, sys, datetime
 import matplotlib
@@ -32,8 +32,8 @@ events = ['Re', 'Tr', 'Bo', 'Sr', 'Sp', 'Ba']
 weekly_increment = 2
 
 # halls and the events they contain
-halls = [ ['RE', 'TR', 'BO', 'SR'],
-          ['BA', 'SP'] ]
+halls = [ ['Re', 'Tr', 'Bo', 'Sr'],
+          ['Ba', 'Sp'] ]
 
 # special occasions and their period in weeks
 specials = [ { 'Airtrack': 4 } ]
@@ -56,7 +56,7 @@ def event_to_hall(idx):
     if event in hall:
       return hall_idx
     hall_idx += 1
-  print('Could not find mapping from event index to hall')
+  print('Could not find mapping from event index %d to hall' % (idx))
   return -1
 
 def exponential_cost(x, b):
@@ -161,7 +161,7 @@ def get_training_initial(initial, offset, weekly_incr):
 
   increment = n_weeks*(weekly_incr + trainings_per_week*events_per_day) + remainder*events_per_day
 
-  # print("Increment for offset %d = %d (%d weeks, %d days)" % (offset, increment, n_weeks, remainder) )
+  print("event increment for training offset %d = %d events (%d weeks, %d days)" % (offset, increment, n_weeks, remainder) )
 
   # actual increment
   ret = []
@@ -230,7 +230,7 @@ def start_date_to_offset(date):
   now = datetime.datetime.strptime(date, '%d.%m.%Y')
   off = datetime.datetime.strptime(start_date, '%d.%m.%Y')
   delta = now-off
-  return delta.days // trainings_per_week
+  return (delta.days//7) * trainings_per_week
 
 def get_date_from_offset(offset):
   """Return date object from offset of initial date
