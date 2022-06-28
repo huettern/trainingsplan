@@ -14,9 +14,9 @@ class Trainingsplan {
 		this.trainingDays = [0, 4];
 		this.trainingsPerWeek;
 		this.eventsPerDay = 3;
-		this.groups = ['K1', 'K2', 'K3', 'K5+'];
+		this.groups = ['K1', 'K2/3', 'K4', 'K5+'];
 		this.events = ['Re', 'Tr', 'Bo', 'Sr', 'Sp', 'Ba'];
-		this.warmup = ['Andrin', 'Lian', 'Stephan', 'Cyrille', 'Melvin', 'Maurice', 'Noah B.', 'Adi', 'Jens', 'Lars', 'Nicola', 'Tim']
+		this.warmup = ['Andrin', 'Lian', 'Cyrille', 'Melvin', 'Noah B.', 'Adi', 'Jens', 'Nicola', 'Tim']
 		this.weeklyIncrement = 2;
 		this.halls = [ ['RE', 'TR', 'BO', 'SR'], ['BA', 'SP'] ];
 		this.specials = [ { 'id': 'airtrack', 'period': 4 } ];
