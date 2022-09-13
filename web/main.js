@@ -10,13 +10,14 @@ class Trainingsplan {
 	constructor() {
 		this.initial = [{ 'group': 0, 'event': 5 }, { 'group': 1, 'event': 4 }, { 'group': 2, 'event': 1 }, { 'group': 3, 'event': 3 }];
 
-		this.startDate = '19.10.2020';
+		this.startDate = '08.08.2022';
 		this.trainingDays = [0, 4];
 		this.trainingsPerWeek;
 		this.eventsPerDay = 3;
-		this.groups = ['K1', 'K2', 'K3', 'K5+'];
-		this.events = ['Re', 'Tr', 'Bo', 'Sr', 'Sp', 'Ba'];
-		this.warmup = ['Andrin', 'Lian', 'Stephan', 'Cyrille', 'Melvin', 'Maurice', 'Noah B.', 'Adi', 'Jens', 'Lars', 'Nicola', 'Tim']
+		this.groups = ['K1', 'K2/3', 'K4', 'KG'];
+		this.skipLastEvent = [false, false, false, true];
+		this.events = ['Bo', 'Sr', 'Sp', 'Ba', 'Re', 'Tr'];
+		this.warmup = ['Adi', 'Nicola']
 		this.weeklyIncrement = 2;
 		this.halls = [['RE', 'TR', 'BO', 'SR'], ['BA', 'SP']];
 		this.specials = [{ 'id': 'airtrack', 'period': 4 }];
@@ -28,23 +29,19 @@ class Trainingsplan {
 		this.currentOffset = this.startDateToOffset(moment().format("DD.MM.YYYY"))
 	}
 
-
 	getTrainingMap(initial, rotation) {
-		var ret = []
-		for (const m in initial) {
-			ret.push({ 'group': initial[m].group, 'event': (initial[m].event + rotation) % this.events.length });
-		}
-		return ret;
+		return initial.map(training => {
+			return {
+				'group': training.group,
+				'event': (training.event + rotation) % (this.skipLastEvent[training.group] ? (this.events.length - 1) : this.events.length)
+			};
+		});
 	}
 
-
 	getEventByGroup(initial, rotation, group) {
-		let mping = this.getTrainingMap(initial, rotation)
-		for (const m in mping) {
-			if (mping[m].group == group) {
-				return this.events[mping[m].event]
-			}
-		}
+		let trainingMap = this.getTrainingMap(initial, rotation)
+		let training = trainingMap.find(training => training.group === group);
+		return this.events[training.event];
 	}
 
 	getDateFromOffset(offset) {
@@ -60,11 +57,12 @@ class Trainingsplan {
 
 		// console.log(`inc for offset ${offset} = ${inc} (${n_weeks} weeks, ${remainder} days)`)
 
-		var ret = []
-		for (const m in initial) {
-			ret.push({ 'group': initial[m].group, 'event': (initial[m].event + inc) % this.events.length });
-		}
-		return ret;
+		return initial.map(training => {
+			return {
+				'group': training.group,
+				'event': (training.event + inc) % this.events.length
+			};
+		});
 	}
 
 	startDateToOffset(date) {
@@ -116,7 +114,7 @@ class Trainingsplan {
 		<thead>
 		<tr>
 		<th scope="col"></th>
-		<th scope="col" colspan="3" class="tpl-day border-left">${monday}</th>
+		<th scope="col" colspan="5" class="tpl-day border-left">${monday}</th>
 		<th scope="col" colspan="3" class="tpl-day border-left border-right">${friday}</th>
 		</tr>
 		</thead>
@@ -126,6 +124,8 @@ class Trainingsplan {
 		<td class="border-left">${g0e0}</td>
 		<td class="">${g0e1}</td>
 		<td class="">${g0e2}</td>
+		<td class=""></td>
+		<td class=""></td>
 		<td class="border-left">${g0e3}</td>
 		<td class="">${g0e4}</td>
 		<td class="border-right">${g0e5}</td>
@@ -135,6 +135,8 @@ class Trainingsplan {
 		<td class="border-left">${g1e0}</td>
 		<td class="">${g1e1}</td>
 		<td class="">${g1e2}</td>
+		<td class=""></td>
+		<td class=""></td>
 		<td class="border-left">${g1e3}</td>
 		<td class="">${g1e4}</td>
 		<td class="border-right">${g1e5}</td>
@@ -144,6 +146,8 @@ class Trainingsplan {
 		<td class="border-left">${g2e0}</td>
 		<td class="">${g2e1}</td>
 		<td class="">${g2e2}</td>
+		<td class=""></td>
+		<td class=""></td>
 		<td class="border-left">${g2e3}</td>
 		<td class="">${g2e4}</td>
 		<td class="border-right">${g2e5}</td>
@@ -153,13 +157,15 @@ class Trainingsplan {
 		<td class="border-left">${g3e0}</td>
 		<td class="">${g3e1}</td>
 		<td class="">${g3e2}</td>
+		<td class="">${g3e3}</td>
+		<td class="">${g3e4}</td>
 		<td class="border-left">${g3e3}</td>
 		<td class="">${g3e4}</td>
 		<td class="border-right">${g3e5}</td>
 		</tr>
 		<tr>
 		<th scope="row"></th>
-		<th scope="col" colspan="3" class="tpl-warmup border-left">${warm0}</th>
+		<th scope="col" colspan="5" class="tpl-warmup border-left">${warm0}</th>
 		<th scope="col" colspan="3" class="tpl-warmup border-left border-right">${warm1}</th>
 		</tr>
 		</tbody>
@@ -213,7 +219,7 @@ function render() {
 	document.getElementById('spannreck').style.display = 'none';
 	var table = document.getElementById("table-trainingsplan");
 	for (var i = 0, row; row = table.rows[i]; i++) {
-		if (table.rows[i].innerHTML.includes('K5+')) {
+		if (table.rows[i].innerHTML.includes('KG')) {
 			for (var j = 0, col; col = row.cells[j]; j++) {
 				if (row.cells[j].innerHTML.includes('Re')) {
 					row.cells[j].classList.add("alert-warning");
