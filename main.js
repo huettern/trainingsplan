@@ -14,7 +14,7 @@ class Trainingsplan {
 		this.trainingDays = [0, 4];
 		this.trainingsPerWeek;
 		this.eventsPerDay = 3;
-		this.groups = ['K1', 'K0', 'K4/5', 'KG'];
+		this.groups = ['K1', 'K2', 'K5', 'KG'];
 		this.skipLastEvent = [false, false, false, true];
 		this.events = ['Bo', 'Sr', 'Sp', 'Ba', 'Re', 'Tr'];
 		this.warmup = ['Adi', 'Nicola']
